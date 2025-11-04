@@ -3,6 +3,7 @@ An app for college students to find out and keep track of events happening at th
 
 ## Description:
 Students will be able to create an individual login to save the events they want to attend.
+
 Students will also have the ability to become *Event Organizers*, and create or edit events.
 
 ## Features:
