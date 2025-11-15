@@ -10,22 +10,24 @@
 <body class="bg-gray-100 min-h-screen">
     <!-- NAVIGATION BAR -->
     <nav class="bg-white border-b border-gray-200 sticky top-0 z-50">
-        <div class="flex items-center justify-between px-6 py-3">
+        <div class="flex items-center justify-center px-6 py-3">
             <!-- search and pfp i couldnt get pfp to work -->
             <div class="flex items-center gap-4 flex-1">
                 <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-black font-semibold cursor-pointer hover:bg-gray-400 transition">
                     PFP
                 </div>
-                <div class="relative flex-none max-w-md ml-3">
-                    <input 
+                <div class="relative flex-1 max-w-md ml-3">
+                    <div class="ml-3">
+                    <input  
                         type="text" 
                         name="q"
                         id="search"
                         aria-label="Search events"
                         placeholder="Search..." 
-                        class="w-full pl-10 pr-4 py-2 bg-gray-100 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        class="w-85 bg-gray-100 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >
-                 </div>
+                    </div>
+                </div>
             </div>
             
             <!-- bloom logo -->
@@ -35,13 +37,8 @@
             
             <!-- i couldnt figure out the sign up and log in buttons sorry -->
             <div class="flex items-center gap-3 flex-1 justify-end">
-                <!-- sign up -->
-                <!-- <button class=  
-                </button>
-
-                log in -->
-                <!-- <button class=
-                </button>  -->
+                <button class="px-4 py-2 bg-blue-600 text-black rounded-lg hover:bg-blue-700 transition">Log In</button>
+                <button class="px-4 py-2 bg-green-600 text-black rounded-lg hover:bg-green-700 transition">Sign Up</button>
             </div>
         </div>
     </nav>
