@@ -1,0 +1,12 @@
+# Python compiled files
+__pycache__/
+*.pyc
+
+# Virtual Environment
+virt/
+
+# Database file (SQLite file is usually local only)
+db.sqlite3
+
+# Log files
+*.log
