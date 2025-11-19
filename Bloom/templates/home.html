@@ -18,39 +18,34 @@
 </head>
 <body class="bg-gray-100 min-h-screen">
     <!-- NAVIGATION BAR -->
-    <nav class="bg-white border-b border-gray-200 sticky top-0 z-50">
-        <div class="flex items-center justify-center px-6 py-3">
-            <!-- search and pfp i couldnt get pfp to work -->
-            <div class="flex items-center gap-4 flex-1">
-                <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-black font-semibold cursor-pointer hover:bg-gray-400 transition">
-                    PFP
-                </div>
-                <div class="relative flex-1 max-w-md ml-3">
-                    <div class="ml-3">
-                    <input  
-                        type="text" 
-                        name="q"
-                        id="search"
-                        aria-label="Search events"
-                        placeholder="Search..." 
-                        class="w-85 bg-gray-100 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    >
-                    </div>
-                </div>
+      <nav class="relative bg-white py-3 px-4 shadow-sm flex items-center">
+    <button class="relative flex rounded-full mr-4">
+        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" 
+          class="size-10 rounded-full bg-gray-800 outline -outline-offset-1" />
+    </button>
+    
+    <form class="max-w-xs w-full ms-4">
+        <label for="search" class="block mb-2.5 text-sm font-medium text-heading sr-only ">Search</label>
+        <div class="relative">
+            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+            <svg class="w-4 h-4 text-body" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/></svg>
             </div>
-            
-            <!-- bloom logo -->
-            <div class="flex-1 flex justify-center">
-                <h1 class="text-5xl font-serif font-bold text-gray-800">Bloom</h1>
-            </div>
-            
-            <!-- i couldnt figure out the sign up and log in buttons sorry -->
-            <div class="flex items-center gap-3 flex-1 justify-end">
-                <button class="px-4 py-2 bg-blue-600 text-black rounded-lg hover:bg-blue-700 transition">Log In</button>
-                <button class="px-4 py-2 bg-green-600 text-black rounded-lg hover:bg-green-700 transition">Sign Up</button>
-            </div>
+        
+            <input type="search" id="search" 
+          class="rounded-full w-full p-2 ps-9 bg-neutral-secondary-medium border border-default-medium text-heading text-sm **rounded-full** focus:ring-brand focus:border-brand shadow-xs placeholder:text-body" 
+          placeholder="Search" required />
+        
         </div>
-    </nav>
+    </form>
+
+    <div class="flex-1 text-center mr-38">
+        <h1 class="text-5xl font-serif">Bloom</h1>
+    </div>
+
+    <button class=" ms-8 bg-blue-500 hover:bg-blue-700 text-white font-serif py-2 px-4 rounded">Log in</button>
+    <button class=" ms-8 bg-blue-500 hover:bg-blue-700 text-white font-serif py-2 px-4 rounded">Sign up</button>
+
+</nav>
 
     <!-- MAIN LAYOUT -->
     <div class="flex h-[calc(100vh-64px)] overflow-hidden">
