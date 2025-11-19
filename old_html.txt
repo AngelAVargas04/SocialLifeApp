@@ -1,0 +1,303 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bloom Test - Home</title>
+    {% tailwind_css %}
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- NAVIGATION BAR -->
+    <nav class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="flex items-center justify-center px-6 py-3">
+            <!-- search and pfp i couldnt get pfp to work -->
+            <div class="flex items-center gap-4 flex-1">
+                <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-black font-semibold cursor-pointer hover:bg-gray-400 transition">
+                    PFP
+                </div>
+                <div class="relative flex-1 max-w-md ml-3">
+                    <div class="ml-3">
+                    <input  
+                        type="text" 
+                        name="q"
+                        id="search"
+                        aria-label="Search events"
+                        placeholder="Search..." 
+                        class="w-85 bg-gray-100 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    >
+                    </div>
+                </div>
+            </div>
+            
+            <!-- bloom logo -->
+            <div class="flex-1 flex justify-center">
+                <h1 class="text-5xl font-serif font-bold text-gray-800">Bloom</h1>
+            </div>
+            
+            <!-- i couldnt figure out the sign up and log in buttons sorry -->
+            <div class="flex items-center gap-3 flex-1 justify-end">
+                <button class="px-4 py-2 bg-blue-600 text-black rounded-lg hover:bg-blue-700 transition">Log In</button>
+                <button class="px-4 py-2 bg-green-600 text-black rounded-lg hover:bg-green-700 transition">Sign Up</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN LAYOUT -->
+    <div class="flex h-[calc(100vh-64px)] overflow-hidden">
+        <!-- Left Sidebar -->
+        <aside class="bg-white flex-shrink-0 overflow-y-auto overflow-x-hidden border-r border-gray-200" style="width: 240px; max-width: 240px; min-width: 240px; border-right: 1px solid #e5e7eb;">
+            <div class="p-6 space-y-6 text-gray-800 text-sm break-words overflow-wrap-anywhere" style="padding: 1.5rem;">
+                <div>
+                    <p class="mb-2 font-bold text-gray-900">
+                        <strong>What is Bloom?</strong>
+                    </p>
+                    <p class="text-gray-700 leading-relaxed">
+                        Bloom is an app designed to vitalize campus life by allowing everyone to easily host, find, promote, or keep track of events on campus
+                    </p>
+                </div>
+
+                <div>
+                    <p class="mb-2 font-bold text-gray-900">
+                        <strong>What can I do as someone looking for events?</strong>
+                    </p>
+                    <p class="text-gray-700 leading-relaxed">
+                        Our platform makes this incredibly simple, by providing a search tool for events at school, allowing you to filter by category, days, location, host, etc. You can subscribe to certain filters so you are notified whenever an event in the category you're interested in is posted on a day or time slot you're subscribed to
+                    </p>
+                </div>
+
+                <div>
+                    <p class="mb-2 font-bold text-gray-900">
+                        <strong>What can I do as someone hosting an event?</strong>
+                    </p>
+                    <p class="text-gray-700 leading-relaxed">
+                        Posting your event on Bloom allows it to reach a wider audience and makes it easier for the people interested in what you're hosting to keep track of upcoming events.
+                    </p>
+                </div>
+
+                <div>
+                    <p class="mb-2 font-bold text-gray-900">
+                        <strong>What differentiates this from other platforms?</strong>
+                    </p>
+                    <p class="text-gray-700 leading-relaxed">
+                        Promotion of events on college campuses is currently strongly focused on clubs. We want to make hosting events on campus more accessible to everyone, and our app gives everyone the platform to organize and promote their events, no matter the size. Anyone is free to promote anything from book clubs to picnics to study sessions to just general hangouts to meet people.
+                    </p>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- posts area -->
+        <main class="flex-1 bg-gray-100 overflow-y-auto min-w-0">
+            <div class="max-w-2xl mx-auto px-8 pt-9 pb-8 space-y-6" style="max-width: 42rem; padding-left: 2rem; padding-right: 2rem; padding-top: 2rem;">
+                <!-- post example 1 -->
+                <article class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 hover:shadow-md transition-shadow" style="padding: 2rem;">
+                    <div class="flex items-start gap-5 mb-5" style="gap: 1.25rem; margin-bottom: 1.25rem;">
+                        <div class="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center text-white font-semibold flex-shrink-0">
+                            JD
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-3 mb-2" style="gap: 0.75rem; margin-bottom: 0.5rem;">
+                                <h3 class="font-semibold text-gray-900">Dude Fella</h3>
+                                <span class="text-gray-500 text-sm">•</span>
+                                <span class="text-gray-500 text-sm">2 hours ago</span>
+                            </div>
+                            <p class="text-sm text-gray-600">Cybersecurity Club</p>
+                        </div>
+                    </div>
+                    <div class="mb-5" style="margin-bottom: 1.25rem;">
+                        <p class="text-gray-800 leading-relaxed">
+                            Hosting a CTF (Capture The Flag) competition this Saturday! Perfect for anyone interested in ethical hacking and cybersecurity. All skill levels welcome :-)
+                        </p>
+                    </div>
+                    <div class="bg-gray-900 rounded-lg p-8 text-center text-white mb-5">
+                        <p class="text-lg font-medium">CTF Event Preview</p>
+                    </div>
+                    <div class="flex items-center gap-8 text-gray-600 pt-2" style="gap: 2rem; padding-top: 0.5rem;">
+                        <button class="flex items-center gap-2 hover:text-blue-600 transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                            <span>24</span>
+                        </button>
+                        <button class="flex items-center gap-2 hover:text-blue-600 transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                            </svg>
+                            <span>8</span>
+                        </button>
+                        <button class="flex items-center gap-2 hover:text-blue-600 transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+                            </svg>
+                            <span>Share</span>
+                        </button>
+                    </div>
+                </article>
+
+                <!-- post example 2 -->
+                <article class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 hover:shadow-md transition-shadow" style="padding: 2rem;">
+                    <div class="flex items-start gap-5 mb-5">
+                        <div class="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center text-white font-semibold flex-shrink-0">
+                            SM
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-3 mb-2">
+                                <h3 class="font-semibold text-gray-900">Edgar Hernandez</h3>
+                                <span class="text-gray-500 text-sm">•</span>
+                                <span class="text-gray-500 text-sm">5 hours ago</span>
+                            </div>
+                            <p class="text-sm text-gray-600">Study Group</p>
+                        </div>
+                    </div>
+                    <div class="mb-5" style="margin-bottom: 1.25rem;">
+                        <p class="text-gray-800 leading-relaxed">
+                            Anyone in CSCI-3336 wanna meet up and study? I'll be free this Friday in the morning, reply if you're down so we can set up a plan
+                        </p>
+                    </div>
+
+                    <div class="flex items-center gap-8 text-gray-600 pt-2" style="gap: 2rem; padding-top: 0.5rem;">
+                        <button class="flex items-center gap-2 hover:text-blue-600 transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                            <span>42</span>
+                        </button>
+                        <button class="flex items-center gap-2 hover:text-blue-600 transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                            </svg>
+                            <span>15</span>
+                        </button>
+                        <button class="flex items-center gap-2 hover:text-blue-600 transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+                            </svg>
+                            <span>Share</span>
+                        </button>
+                    </div>
+                </article>
+
+                <!-- post example 3 -->
+                <article class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 hover:shadow-md transition-shadow" style="padding: 2rem;">
+                    <div class="flex items-start gap-5 mb-5">
+                        <div class="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center text-white font-semibold flex-shrink-0">
+                            MJ
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-3 mb-2">
+                                <h3 class="font-semibold text-gray-900">Person Lastname</h3>
+                                <span class="text-gray-500 text-sm">•</span>
+                                <span class="text-gray-500 text-sm">1 day ago</span>
+                            </div>
+                            <p class="text-sm text-gray-600">General</p>
+                        </div>
+                    </div>
+                    <div class="mb-5" style="margin-bottom: 1.25rem;">
+                        <p class="text-gray-800 leading-relaxed">
+                            Just met so many new people and had a great time at the last hangout, Bloom is just such an awesome and easy way to organize events on campus
+                        </p>
+                    </div>
+ 
+                    <div class="flex items-center gap-8 text-gray-600 pt-2" style="gap: 2rem; padding-top: 0.5rem;">
+                        <button class="flex items-center gap-2 hover:text-blue-600 transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                            <span>18</span>
+                        </button>
+                        <button class="flex items-center gap-2 hover:text-blue-600 transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                            </svg>
+                            <span>6</span>
+                        </button>
+                        <button class="flex items-center gap-2 hover:text-blue-600 transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+                            </svg>
+                            <span>Share</span>
+                        </button>
+                    </div>
+                </article>
+            </div>
+        </main>
+        
+        <!-- right sidebar -->
+        <aside class="w-85 bg-white flex-shrink-0 overflow-y-auto border-l border-gray-200" style="border-left: 1px solid #e5e7eb; width: 14rem;">
+            <div class="p-6 space-y-10" style="padding: 1.5rem;">
+                <!-- Your Clubs Section -->
+                <section>
+                    <h2 class="text-gray-900 font-bold mb-4 pb-2 border-b border-gray-200"><strong>Your Clubs</strong></h2>
+                    <div class="space-y-4" style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        <div class="hover:bg-gray-50 transition cursor-pointer py-2">
+                            <p class="text-black font-semibold mb-1">Music Club</p>
+                            <p class="text-gray-500 text-sm">245 members</p>
+                        </div>
+                        <div class="hover:bg-gray-50 transition cursor-pointer py-2">
+                            <p class="text-black font-semibold mb-1">Cybersecurity Club</p>
+                            <p class="text-gray-500 text-sm">189 members</p>
+                        </div>
+                        <div class="hover:bg-gray-50 transition cursor-pointer py-2">
+                            <p class="text-black font-semibold mb-1">Making Friends</p>
+                            <p class="text-gray-500 text-sm">312 members</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Upcoming Events Section -->
+                <section>
+                    <h2 class="text-gray-900 font-bold mb-4 pb-2 border-b border-gray-200"><strong>Upcoming Events</strong></h2>
+                    <div class="space-y-4" style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        <div class="hover:bg-gray-50 transition cursor-pointer py-2">
+                            <p class="text-black font-semibold mb-1">Lunch at the Union</p>
+                            <p class="text-gray-500 text-sm">Tomorrow, 3:00 PM</p>
+                        </div>
+                        <div class="hover:bg-gray-50 transition cursor-pointer py-2">
+                            <p class="text-black font-semibold mb-1">Book Discussion</p>
+                            <p class="text-gray-500 text-sm">Friday, 7:00 PM</p>
+                        </div>
+                        <div class="hover:bg-gray-50 transition cursor-pointer py-2">
+                            <p class="text-black font-semibold mb-1">Hackathon</p>
+                            <p class="text-gray-500 text-sm">Next Saturday, 9:00 AM</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Connections Section -->
+                <section>
+                    <h2 class="text-gray-900 font-bold mb-4 pb-2 border-b border-gray-200"><strong>Connections</strong></h2>
+                    <div class="space-y-4" style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        <div class="flex items-center gap-4 hover:bg-gray-50 transition cursor-pointer py-2" style="gap: 1rem;">
+                            <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-700 font-semibold flex-shrink-0">
+                                EH
+                            </div>
+                            <div>
+                                <p class="text-black font-semibold">Edgar Hernandez</p>
+                                <p class="text-gray-500 text-sm">Active now</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 hover:bg-gray-50 transition cursor-pointer py-2" style="gap: 1rem;">
+                            <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-700 font-semibold flex-shrink-0">
+                                AV
+                            </div>
+                            <div>
+                                <p class="text-black font-semibold">Angel Vargas</p>
+                                <p class="text-gray-500 text-sm">Active 5m ago</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 hover:bg-gray-50 transition cursor-pointer py-2" style="gap: 1rem;">
+                            <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-700 font-semibold flex-shrink-0">
+                                JA
+                            </div>
+                            <div>
+                                <p class="text-black font-semibold">Josue Aranday</p>
+                                <p class="text-gray-500 text-sm">Active 1h ago</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </aside>
+    </div>
+</body>
+</html>
