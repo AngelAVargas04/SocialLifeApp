@@ -10,7 +10,33 @@
     {% include 'partials/navbar.html' %}
     <div class="flex h-[calc(100vh-64px)] overflow-hidden">
         {% include 'partials/left_bar.html' %}
-        {% include 'partials/post.html' %}
+        <main class="flex-1 overflow-y-auto border-x border-gray-200">
+            <div class="max-w-xl mx-auto py-4">
+
+                {% if user.is_authenticated %}
+                <div class="bg-white p-4 rounded-xl shadow-md mb-6 border border-gray-200">
+                    <h2 class="text-xl font-serif text-gray-800 mb-4">What's happening?</h2>
+                    
+                    <form method="post" action="{% url 'home' %}">
+                        {% csrf_token %}
+                        {{ form.management_form }}
+                        {{ form.title }} 
+                        {{ form.content }} 
+                        
+                        <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-150 mt-4">
+                            Post to Bloom
+                        </button>
+                    </form>
+                </div>
+                {% endif %}
+                
+                {% for post in posts %}
+                    {% include 'partials/post.html' %}
+                {% empty %}
+                    <p class="text-center mt-10 text-gray-500">No posts yet. Be the first to share something!</p>
+                {% endfor %}
+            </div>
+        </main>
         {% include 'partials/right_bar.html' %}
     </div>
 </body>

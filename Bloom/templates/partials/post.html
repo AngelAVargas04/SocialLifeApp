@@ -1,134 +1,50 @@
- <main class="flex-1 bg-gray-100 overflow-y-auto min-w-0">
-            <div class="max-w-2xl mx-auto px-8 pt-9 pb-8 space-y-6" style="max-width: 42rem; padding-left: 2rem; padding-right: 2rem; padding-top: 2rem;">
-                <!-- post example 1 -->
-                <article class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 hover:shadow-md transition-shadow" style="padding: 2rem;">
-                    <div class="flex items-start gap-5 mb-5" style="gap: 1.25rem; margin-bottom: 1.25rem;">
-                        <div class="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center text-white font-semibold flex-shrink-0">
-                            JD
-                        </div>
-                        <div class="flex-1">
-                            <div class="flex items-center gap-3 mb-2" style="gap: 0.75rem; margin-bottom: 0.5rem;">
-                                <h3 class="font-semibold text-gray-900">Dude Fella</h3>
-                                <span class="text-gray-500 text-sm">•</span>
-                                <span class="text-gray-500 text-sm">2 hours ago</span>
-                            </div>
-                            <p class="text-sm text-gray-600">Cybersecurity Club</p>
-                        </div>
-                    </div>
-                    <div class="mb-5" style="margin-bottom: 1.25rem;">
-                        <p class="text-gray-800 leading-relaxed">
-                            Hosting a CTF (Capture The Flag) competition this Saturday! Perfect for anyone interested in ethical hacking and cybersecurity. All skill levels welcome :-)
-                        </p>
-                    </div>
-                    <div class="bg-gray-900 rounded-lg p-8 text-center text-white mb-5">
-                        <p class="text-lg font-medium">CTF Event Preview</p>
-                    </div>
-                    <div class="flex items-center gap-8 text-gray-600 pt-2" style="gap: 2rem; padding-top: 0.5rem;">
-                        <button class="flex items-center gap-2 hover:text-blue-600 transition">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                            </svg>
-                            <span>24</span>
-                        </button>
-                        <button class="flex items-center gap-2 hover:text-blue-600 transition">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-                            </svg>
-                            <span>8</span>
-                        </button>
-                        <button class="flex items-center gap-2 hover:text-blue-600 transition">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
-                            </svg>
-                            <span>Share</span>
-                        </button>
-                    </div>
-                </article>
+{% load static %}
+{% load humanize %} 
 
-                <!-- post example 2 -->
-                <article class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 hover:shadow-md transition-shadow" style="padding: 2rem;">
-                    <div class="flex items-start gap-5 mb-5">
-                        <div class="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center text-white font-semibold flex-shrink-0">
-                            SM
-                        </div>
-                        <div class="flex-1">
-                            <div class="flex items-center gap-3 mb-2">
-                                <h3 class="font-semibold text-gray-900">Edgar Hernandez</h3>
-                                <span class="text-gray-500 text-sm">•</span>
-                                <span class="text-gray-500 text-sm">5 hours ago</span>
-                            </div>
-                            <p class="text-sm text-gray-600">Study Group</p>
-                        </div>
-                    </div>
-                    <div class="mb-5" style="margin-bottom: 1.25rem;">
-                        <p class="text-gray-800 leading-relaxed">
-                            Anyone in CSCI-3336 wanna meet up and study? I'll be free this Friday in the morning, reply if you're down so we can set up a plan
-                        </p>
-                    </div>
-
-                    <div class="flex items-center gap-8 text-gray-600 pt-2" style="gap: 2rem; padding-top: 0.5rem;">
-                        <button class="flex items-center gap-2 hover:text-blue-600 transition">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                            </svg>
-                            <span>42</span>
-                        </button>
-                        <button class="flex items-center gap-2 hover:text-blue-600 transition">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-                            </svg>
-                            <span>15</span>
-                        </button>
-                        <button class="flex items-center gap-2 hover:text-blue-600 transition">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
-                            </svg>
-                            <span>Share</span>
-                        </button>
-                    </div>
-                </article>
-
-                <!-- post example 3 -->
-                <article class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 hover:shadow-md transition-shadow" style="padding: 2rem;">
-                    <div class="flex items-start gap-5 mb-5">
-                        <div class="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center text-white font-semibold flex-shrink-0">
-                            MJ
-                        </div>
-                        <div class="flex-1">
-                            <div class="flex items-center gap-3 mb-2">
-                                <h3 class="font-semibold text-gray-900">Person Lastname</h3>
-                                <span class="text-gray-500 text-sm">•</span>
-                                <span class="text-gray-500 text-sm">1 day ago</span>
-                            </div>
-                            <p class="text-sm text-gray-600">General</p>
-                        </div>
-                    </div>
-                    <div class="mb-5" style="margin-bottom: 1.25rem;">
-                        <p class="text-gray-800 leading-relaxed">
-                            Just met so many new people and had a great time at the last hangout, Bloom is just such an awesome and easy way to organize events on campus
-                        </p>
-                    </div>
- 
-                    <div class="flex items-center gap-8 text-gray-600 pt-2" style="gap: 2rem; padding-top: 0.5rem;">
-                        <button class="flex items-center gap-2 hover:text-blue-600 transition">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                            </svg>
-                            <span>18</span>
-                        </button>
-                        <button class="flex items-center gap-2 hover:text-blue-600 transition">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-                            </svg>
-                            <span>6</span>
-                        </button>
-                        <button class="flex items-center gap-2 hover:text-blue-600 transition">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
-                            </svg>
-                            <span>Share</span>
-                        </button>
-                    </div>
-                </article>
+<article class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 hover:shadow-md transition-shadow">
+    
+    <div class="flex items-start gap-5 mb-5" style="gap: 1.25rem; margin-bottom: 1.25rem;">
+        
+        <div class="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center text-white font-semibold flex-shrink-0">
+            {{ post.user.username|make_list|first|upper }}{{ post.user.username|slice:"1:2"|upper }}
+        </div>
+        
+        <div class="flex-1">
+            <div class="flex items-center gap-3 mb-2" style="gap: 0.75rem; margin-bottom: 0.5rem;">
+                <h3 class="font-semibold text-gray-900">{{ post.user.username }}</h3>
+                <span class="text-gray-500 text-sm">•</span>
+                
+                <span class="text-gray-500 text-sm">{{ post.date_posted|timesince }} ago</span>
             </div>
-        </main>
+            
+            <p class="text-sm text-gray-600">
+                {% if post.subject %}
+                    {{ post.subject }} 
+                {% else %}
+                    General
+                {% endif %}
+            </p>
+        </div>
+    </div>
+    
+    <div class="mb-5" style="margin-bottom: 1.25rem;">
+        <p class="text-gray-800 leading-relaxed whitespace-pre-wrap">
+            {{ post.content }}
+        </p>
+    </div>
+    
+    <div class="flex items-center gap-8 text-gray-600 pt-2" style="gap: 2rem; padding-top: 0.5rem;">
+        <button class="flex items-center gap-2 hover:text-blue-600 transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">...</svg>
+            <span>0</span> 
+        </button>
+        <button class="flex items-center gap-2 hover:text-blue-600 transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">...</svg>
+            <span>0</span>
+        </button>
+        <button class="flex items-center gap-2 hover:text-blue-600 transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">...</svg>
+            <span>Share</span>
+        </button>
+    </div>
+</article>
