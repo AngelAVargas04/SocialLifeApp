@@ -6,11 +6,53 @@
     <title>Bloom - Sign Up </title>
     {% tailwind_css %}
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center"
-      style="background: url('{% static 'image/background.png' %}') no-repeat center center / cover;">
-
+<body class="min-h-screen flex items-center justify-center"
+      style="background-image: url('{% static 'image/background.png' %}'); background-repeat: no-repeat; background-position: center center; background-size: cover;">
     
+    <div class="w-full max-w-md bg-white p-8 rounded-xl shadow-2xl border border-gray-200 backdrop-blur-sm bg-opacity-90">
+        
+        {% load static %}
+        <div class="text-center mb-6">
+            <img src="{% static 'image/logo_Bloom_BW.svg' %}" alt="Bloom Logo" class="h-10 mx-auto" />
+        </div>
+        
+        <h2 class="text-2xl font-serif text-center mb-6 text-gray-800">Create Your Bloom Account</h2>
+        
+        <form method="post" action="{% url 'signup' %}">
+            {% csrf_token %}
 
+            {% if form.non_field_errors %}
+            <div class="p-3 mb-4 text-sm text-red-800 bg-red-100 rounded-lg" role="alert">
+                {{ form.non_field_errors }}
+            </div>
+            {% endif %}
+
+            {% for field in form %}
+            <div class="mb-4">
+                <label for="{{ field.id_for_label }}" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ field.label }}
+                </label>
+                
+                {{ field }}
+                <input type="{{ field.field.widget.input_type }}" id="{{ field.id_for_label }}" name="{{ field.html_name }}"
+                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
+                       placeholder="{{ field.label }}">
+
+                {% for error in field.errors %}
+                    <p class="text-red-500 text-xs italic mt-1">{{ error }}</p>
+                {% endfor %}
+            </div>
+            {% endfor %}
+            
+            <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-150 mt-4">
+                Sign Up
+            </button>
+            
+            <p class="text-center text-sm mt-4 text-gray-600">
+                Already have an account? <a href="{% url 'login' %}" class="text-blue-500 hover:underline font-medium">Log In</a>
+            </p>
+        </form>
+        
+    </div>
 </body>
-
 </html>
