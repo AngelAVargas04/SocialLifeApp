@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Post
 from .forms import PostForm
 from django.utils.text import slugify # <--- NEW IMPORT
+from django.contrib.auth.forms import UserCreationForm
 
 # Create your views here.
 @login_required
