@@ -18,6 +18,7 @@ class Post(models.Model):
     content = models.TextField(max_length=280) 
 
     likes = models.PositiveIntegerField(default=0)  # Count of likes
+    
     comments = models.PositiveIntegerField(default=0)  # Count of comments
     
     
