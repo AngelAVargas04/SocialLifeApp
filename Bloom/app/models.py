@@ -16,6 +16,10 @@ class Post(models.Model):
     
     # Content of the post. Max length
     content = models.TextField(max_length=280) 
+
+    likes = models.PositiveIntegerField(default=0)  # Count of likes
+    comments = models.PositiveIntegerField(default=0)  # Count of comments
+    
     
     # SLUG FIELD (Optional for social media, often used for detailed post pages)
     slug = models.SlugField(unique=True)

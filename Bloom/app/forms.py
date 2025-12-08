@@ -27,3 +27,13 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = ['title', 'content'] # Fields the user fills out
         # Note: 'user', 'date_posted', and 'slug' are handled automatically in the view
+
+class CommentForm(forms.Form):
+    comment = forms.CharField(
+        label='',
+        widget=forms.Textarea(attrs={
+            'rows': 2,
+            'placeholder': 'Write a comment...',
+            'class': 'w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
+        })
+    )
