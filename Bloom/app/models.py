@@ -18,7 +18,7 @@ class Post(models.Model):
     content = models.TextField(max_length=280) 
 
     likes = models.PositiveIntegerField(default=0)  # Count of likes
-    
+
     comments = models.PositiveIntegerField(default=0)  # Count of comments
     
     
@@ -37,3 +37,15 @@ class Post(models.Model):
     def __str__(self):
         # Displays the username and the start of the content
         return f"{self.user.username}: {self.content[:20]}..."
+    
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='post_comments')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField(max_length=280)
+    date_commented = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['date_commented']
+
+    def __str__(self):
+        return f"Comment by {self.user.username} on {self.post.slug}"
