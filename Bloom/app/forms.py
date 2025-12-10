@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post
+from .models import Post, Comment, Profile
 
 class PostForm(forms.ModelForm):
     # Customize the appearance of the content
@@ -28,8 +28,9 @@ class PostForm(forms.ModelForm):
         fields = ['title', 'content'] # Fields the user fills out
         # Note: 'user', 'date_posted', and 'slug' are handled automatically in the view
 
-class CommentForm(forms.Form):
-    comment = forms.CharField(
+class CommentForm(forms.ModelForm):
+    """Form for creating comments on posts"""
+    content = forms.CharField(
         label='',
         widget=forms.Textarea(attrs={
             'rows': 2,
@@ -37,3 +38,23 @@ class CommentForm(forms.Form):
             'class': 'w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
         })
     )
+    
+    class Meta:
+        model = Comment
+        fields = ['content']
+        # Note: 'user' and 'post' are handled automatically in the view
+
+class ProfilePictureForm(forms.ModelForm):
+    """Form for uploading profile picture"""
+    profile_picture = forms.ImageField(
+        required=False,
+        widget=forms.FileInput(attrs={
+            'class': 'hidden',
+            'accept': 'image/*',
+            'id': 'profile-picture-input'
+        })
+    )
+    
+    class Meta:
+        model = Profile
+        fields = ['profile_picture']

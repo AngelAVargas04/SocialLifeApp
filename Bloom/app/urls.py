@@ -12,8 +12,12 @@ urlpatterns = [
     
     # NEW: Also include the logout path for completeness
     # NEW NEW: Took it out (Josue)
-    path('logout/', auth_views.LogoutView.as_view(next_page='/'), name='logout'), 
+    path('logout/', views.logout_view, name='logout'), 
     
     path('signup/', views.signup, name='signup'),
     path('profile/', views.profile, name='profile'),
+    path('search-clubs/', views.search_clubs, name='search_clubs'),
+    path('update-profile-picture/', views.update_profile_picture, name='update_profile_picture'),
+    path('remove-profile-picture/', views.remove_profile_picture, name='remove_profile_picture'),
+    path('aboutus/', views.aboutus, name='aboutus'),
 ]
