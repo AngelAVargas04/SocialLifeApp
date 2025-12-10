@@ -168,3 +168,26 @@ def search_clubs(request):
 def aboutus(request):
     """About Us page with all Bloom information"""
     return render(request, 'aboutus.html')
+
+@login_required
+def like_post(request, slug):
+    """AJAX endpoint to like or unlike a post"""
+    post = get_object_or_404(Post, slug=slug)
+    user = request.user
+    
+    # Check if the user has already liked the post
+    existing_like = post.likes.filter(user=user).first()
+    
+    if existing_like:
+        # User has liked the post before, so unlike it
+        existing_like.delete()
+        liked = False
+    else:
+        # User has not liked the post, so create a new like
+        post.likes.create(user=user)
+        liked = True
+    
+    return JsonResponse({
+        'liked': liked,
+        'like_count': post.get_like_count()
+    }) #hopefully, the logic is correct. looks correct to me. 

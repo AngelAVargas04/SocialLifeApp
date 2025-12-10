@@ -15,7 +15,7 @@
 
                 {% if user.is_authenticated %}
                 <div class="bg-white p-4 rounded-xl shadow-md mb-6 border border-gray-200">
-                    <h2 class="w-full text-center text-xl px-4 py-2 rounded-lg transition duration-150 mb-4" onclick="document.getElementById('post-form').classList.toggle('hidden')">
+                    <h2 class="w-full text-center text-xl px-4 py-2 rounded-lg transition duration-150 mb-4" style="font-weight: 600; color: #1a202c;">
                         What's on your mind, {{ user.username }}? </h2>
                     
                     <form method="post" action="{% url 'home' %}">
