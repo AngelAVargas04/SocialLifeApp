@@ -5,8 +5,15 @@
     
     <div class="flex items-start gap-5 mb-5" style="gap: 1.25rem; margin-bottom: 1.25rem;">
         
-        <div class="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center text-white font-semibold flex-shrink-0">
-            {{ post.user.username|make_list|first|upper }}{{ post.user.username|slice:"1:2"|upper }}
+        <div class="relative flex rounded-full focus:outline-none cursor-pointer">
+             {% if user.profile.profile_picture %}
+                <img src="{{ user.profile.profile_picture.url }}" alt="Profile" 
+                        class="size-10 rounded-full bg-gray-800 outline -outline-offset-1 object-cover" />
+            {% else %}
+                    <div class="size-10 rounded-full bg-gray-300 outline -outline-offset-1 flex items-center justify-center text-gray-700 font-semibold text-sm">
+                        {{ user.username|first|upper|default:"?" }}
+                    </div>
+            {% endif %}
         </div>
         
         <div class="flex-1">
