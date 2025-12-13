@@ -6,8 +6,8 @@
     <div class="flex items-start gap-5 mb-5" style="gap: 1.25rem; margin-bottom: 1.25rem;">
         
         <div class="relative flex rounded-full focus:outline-none cursor-pointer">
-             {% if user.profile.profile_picture %}
-                <img src="{{ user.profile.profile_picture.url }}" alt="Profile" 
+             {% if post.user.profile.profile_picture %}
+                <img src="{{ post.user.profile.profile_picture.url }}" alt="Profile" 
                         class="size-10 rounded-full bg-gray-800 outline -outline-offset-1 object-cover" />
             {% else %}
                     <div class="size-10 rounded-full bg-gray-300 outline -outline-offset-1 flex items-center justify-center text-gray-700 font-semibold text-sm">
