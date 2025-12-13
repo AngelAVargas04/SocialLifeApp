@@ -41,12 +41,16 @@
     </div>
     
     <div class="flex items-center gap-8 text-gray-600 pt-2" style="gap: 2rem; padding-top: 0.5rem;">
-        <button class="flex items-center gap-2 hover:text-blue-600 transition" 
-        data-id = "{{ post.id }}" >
+        <button
+        class="flex items-center gap-2 hover:text-blue-600 transition" 
+        data-slug="{{ post.slug }}"
+        data-url ="{% url 'like_post' slug=post.slug %}"
+        id="like-{{ post.slug }}"
+        >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
             </svg>
-            <span>{{ post.get_like_count }}</span> 
+            <span id="count-{{ post.slug }}">{{ post.get_like_count }}</span> 
         </button>
         
         <button class="flex items-center gap-2 hover:text-blue-600 transition" type="submit">
@@ -63,3 +67,24 @@
         </button>
     </div>
 </article>
+
+
+<script>
+    // Function to get the CSRF token from the cookie
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                let cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
+</script>

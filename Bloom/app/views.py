@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-from .models import Post, Club, Profile
+from .models import Post, Club, Profile, Like, Comment 
 from .forms import PostForm, ProfilePictureForm
 from django.utils.text import slugify # <--- NEW IMPORT
 from django.contrib.auth.forms import UserCreationForm
@@ -172,6 +172,12 @@ def aboutus(request):
 @login_required
 def like_post(request, slug):
     """AJAX endpoint to like or unlike a post"""
+    
+    # 1. Check for POST method for security and idempotence
+    if request.method != 'POST':
+        # Return a 405 Method Not Allowed error for non-POST requests
+        return JsonResponse({'error': 'Method not allowed'}, status=405)
+        
     post = get_object_or_404(Post, slug=slug)
     user = request.user
     
@@ -184,10 +190,38 @@ def like_post(request, slug):
         liked = False
     else:
         # User has not liked the post, so create a new like
+        # The Like model handles the creation logic
         post.likes.create(user=user)
         liked = True
     
+    # Return the updated state
     return JsonResponse({
         'liked': liked,
         'like_count': post.get_like_count()
-    }) #hopefully, the logic is correct. looks correct to me. 
+    })
+
+@login_required
+def add_comment(request, slug):
+    """AJAX endpoint to add a comment to a post"""
+    post = get_object_or_404(Post, slug=slug)
+    
+    if request.method == 'POST':
+        content = request.POST.get('content', '').strip()
+        
+        if content:
+            comment = post.post_comments.create(
+                user=request.user,
+                content=content
+            )
+            
+            return JsonResponse({
+                'success': True,
+                'comment': {
+                    'user': comment.user.username,
+                    'content': comment.content,
+                    'date_commented': comment.date_commented.strftime('%Y-%m-%d %H:%M')
+                },
+                'comment_count': post.get_comment_count()
+            })
+    
+    return JsonResponse({'success': False, 'error': 'Invalid request'})

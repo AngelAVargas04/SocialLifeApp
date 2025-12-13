@@ -20,4 +20,5 @@ urlpatterns = [
     path('update-profile-picture/', views.update_profile_picture, name='update_profile_picture'),
     path('remove-profile-picture/', views.remove_profile_picture, name='remove_profile_picture'),
     path('aboutus/', views.aboutus, name='aboutus'),
+    path('like-post/<slug:slug>/', views.like_post, name='like_post'),
 ]
