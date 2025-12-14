@@ -165,6 +165,43 @@ def search_clubs(request):
     club_list = [{'id': club.id, 'name': club.name} for club in clubs]
     return JsonResponse({'clubs': club_list})
 
+@login_required
+def create_club(request):
+    """AJAX endpoint to create a new club"""
+    if request.method == 'POST':
+        import json
+        from django.db import IntegrityError
+        
+        try:
+            data = json.loads(request.body)
+            club_name = data.get('name', '').strip()
+            
+            if not club_name:
+                return JsonResponse({'success': False, 'error': 'Club name is required'})
+            
+            # Check if club already exists (case-insensitive)
+            if Club.objects.filter(name__iexact=club_name).exists():
+                return JsonResponse({'success': False, 'error': 'Name already taken'})
+            
+            # Create the club
+            club = Club.objects.create(name=club_name)
+            return JsonResponse({
+                'success': True,
+                'club': {
+                    'id': club.id,
+                    'name': club.name
+                }
+            })
+        except IntegrityError:
+            # Catch database-level uniqueness constraint violation
+            return JsonResponse({'success': False, 'error': 'Name already taken'})
+        except json.JSONDecodeError:
+            return JsonResponse({'success': False, 'error': 'Invalid request data'})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': 'An error occurred while creating the club'})
+    
+    return JsonResponse({'success': False, 'error': 'Invalid request method'})
+
 def aboutus(request):
     """About Us page with all Bloom information"""
     return render(request, 'aboutus.html')

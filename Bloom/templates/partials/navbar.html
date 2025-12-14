@@ -5,10 +5,10 @@
   {{ clubs|json_script:"clubs-data" }}
   <nav class="relative bg-white py-3 px-4 shadow-sm flex items-center">
     <!-- Left side: Profile Picture and Search -->
-    <div class="flex items-center gap-4 flex-shrink-0" style="width: 240px;">
+    <div class="flex items-center gap-4 flex-shrink-0">
         <!-- Profile Picture with Dropdown -->
         {% if user.is_authenticated %}
-        <div class="relative">
+        <div class="relative flex-shrink-0">
             <button id="profilePicBtn" class="relative flex rounded-full focus:outline-none cursor-pointer">
                 {% if user.profile.profile_picture %}
                     <img src="{{ user.profile.profile_picture.url }}" alt="Profile" 
@@ -44,23 +44,24 @@
         </div>
         {% endif %}
 
-        <div class="max-w-xs w-full relative flex-1">
-            <label for="search" class="block mb-2.5 text-sm font-medium text-heading sr-only">Search</label>
-            <div class="relative">
-                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                    <svg class="w-4 h-4 text-body" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
-                    </svg>
+        <div class="max-w-sm w-full relative flex-shrink-0 flex items-center gap-2">
+            <div class="relative flex-1">
+                <label for="search" class="block mb-2.5 text-sm font-medium text-heading sr-only">Search</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                        <svg class="w-4 h-4 text-body" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
+                        </svg>
+                    </div>
+                
+                    <input type="search" id="search" 
+                        class="rounded-full w-full p-2 ps-9 bg-neutral-secondary-medium border border-default-medium text-heading text-sm focus:ring-brand focus:border-brand shadow-xs placeholder:text-body" 
+                        placeholder="Search for groups" autocomplete="off" />
+                
                 </div>
-            
-                <input type="search" id="search" 
-                    class="rounded-full w-full p-2 ps-9 bg-neutral-secondary-medium border border-default-medium text-heading text-sm focus:ring-brand focus:border-brand shadow-xs placeholder:text-body" 
-                    placeholder="Search for groups" autocomplete="off" />
-            
-            </div>
-            
-            <!-- Dropdown Menu -->
-            <div id="searchDropdown" class="hidden absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto">
+                
+                <!-- Dropdown Menu -->
+                <div id="searchDropdown" class="hidden absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto">
                 <!-- Recent Searches Section -->
                 <div id="recentSearches" class="border-b border-gray-200 p-3">
                     <div class="flex justify-between items-center mb-2">
@@ -81,33 +82,74 @@
                     </div>
                 </div>
             </div>
+            </div>
+            
+            <!-- Create a Group Button -->
+            {% if user.is_authenticated %}
+            <button id="createClubBtn" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-full transition-colors whitespace-nowrap flex-shrink-0">
+                Create a Group
+            </button>
+            {% endif %}
         </div>
     </div>
 
-    <!-- Center: Logo -->
-    <div class="flex-1 flex justify-center">
+    <!-- Center: Logo (absolutely positioned for perfect centering) -->
+    <div class="absolute z-10" style="left: 50%; top: 50%; transform: translate(-50%, -50%);">
         <a href="{% url 'home' %}">
-            <img src="{% static 'image/logo_Bloom_BW.svg' %}" alt="Bloom Logo" class="h-12 mx-auto" />
+            <img src="{% static 'image/logo_Bloom_BW.svg' %}" alt="Bloom Logo" class="h-12" />
         </a>
     </div>
 
-    <!-- Right side: Hello text or Login/Signup buttons -->
-    <div class="flex items-center justify-end flex-shrink-0" style="width: 224px;">
+    <!-- Right side: Hello text or Login/Signup buttons (absolutely positioned to the right) -->
+    <div class="absolute flex items-center" style="right: 1rem; top: 50%; transform: translateY(-50%);">
         {% if user.is_authenticated %}
             <span class="text-black font-semibold">Hello, {{ user.username }}!</span>
         {% else %}
             <div class="flex items-center gap-3">
                 <a href="{% url 'login' %}">
-                    <button class="m-8 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Log in</button>
+                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Log in</button>
                 </a>
                 <a href="{% url 'signup' %}">
-                    <button class="ms-8 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Sign up</button>
+                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Sign up</button>
                 </a>
             </div>
         {% endif %}
     </div>
 
 </nav>
+
+<!-- Create Club Modal -->
+<div id="createClubModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md mx-4">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-bold text-gray-900">Create a Club</h2>
+            <button id="closeClubModal" class="text-gray-400 hover:text-gray-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        
+        <form id="createClubForm">
+            <div class="mb-4">
+                <label for="clubName" class="block text-sm font-medium text-gray-700 mb-2">Club Name</label>
+                <input type="text" id="clubName" name="club_name" 
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Enter club name" required maxlength="100" />
+                <div id="clubNameError" class="hidden mt-2 text-sm text-red-600"></div>
+            </div>
+            
+            <div class="flex justify-end gap-3">
+                <button type="button" id="cancelClubBtn" class="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
+                    Cancel
+                </button>
+                <button type="submit" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors">
+                    Create
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 
 <script>
 (function() {
@@ -198,14 +240,30 @@
         recent.forEach(clubName => {
             const item = document.createElement('div');
             item.className = 'flex items-center justify-between p-2 hover:bg-gray-50 rounded cursor-pointer group';
-            item.innerHTML = `
-                <span class="text-sm text-gray-700 flex-1" onclick="selectClub('${clubName}')">${clubName}</span>
-                <button onclick="removeRecentSearchHandler('${clubName}')" class="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-gray-200 rounded">
-                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
+            
+            // Create span with click handler
+            const span = document.createElement('span');
+            span.className = 'text-sm text-gray-700 flex-1';
+            span.textContent = clubName; // Use textContent to prevent XSS
+            span.addEventListener('click', function() {
+                selectClub(clubName);
+            });
+            
+            // Create remove button
+            const removeBtn = document.createElement('button');
+            removeBtn.className = 'opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-gray-200 rounded';
+            removeBtn.innerHTML = `
+                <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
             `;
+            removeBtn.addEventListener('click', function(event) {
+                event.stopPropagation();
+                removeRecentSearch(clubName);
+            });
+            
+            item.appendChild(span);
+            item.appendChild(removeBtn);
             recentSearchesList.appendChild(item);
         });
     }
@@ -233,7 +291,15 @@
             results.forEach(clubName => {
                 const item = document.createElement('div');
                 item.className = 'p-2 hover:bg-gray-50 rounded cursor-pointer';
-                item.innerHTML = `<span class="text-sm text-gray-700" onclick="selectClub('${clubName}')">${clubName}</span>`;
+                
+                const span = document.createElement('span');
+                span.className = 'text-sm text-gray-700';
+                span.textContent = clubName; // Use textContent to prevent XSS
+                span.addEventListener('click', function() {
+                    selectClub(clubName);
+                });
+                
+                item.appendChild(span);
                 searchResultsList.appendChild(item);
             });
         }
@@ -257,19 +323,13 @@
     }
 
     // Select a club
-    window.selectClub = function(clubName) {
+    function selectClub(clubName) {
         searchInput.value = clubName;
         addToRecentSearches(clubName);
         searchDropdown.classList.add('hidden');
         // You can add navigation logic here, e.g., redirect to club page
         console.log('Selected club:', clubName);
-    };
-
-    // Remove recent search handler
-    window.removeRecentSearchHandler = function(clubName) {
-        event.stopPropagation();
-        removeRecentSearch(clubName);
-    };
+    }
 
     // Show dropdown on focus and refresh clubs to get latest data
     searchInput.addEventListener('focus', function() {
@@ -436,6 +496,102 @@
                 });
             });
         }
+    }
+})();
+
+// Create Club Modal
+(function() {
+    const createClubBtn = document.getElementById('createClubBtn');
+    const createClubModal = document.getElementById('createClubModal');
+    const closeClubModal = document.getElementById('closeClubModal');
+    const cancelClubBtn = document.getElementById('cancelClubBtn');
+    const createClubForm = document.getElementById('createClubForm');
+    const clubNameInput = document.getElementById('clubName');
+    const clubNameError = document.getElementById('clubNameError');
+    
+    if (createClubBtn && createClubModal) {
+        // Open modal
+        createClubBtn.addEventListener('click', function() {
+            createClubModal.classList.remove('hidden');
+            clubNameInput.focus();
+        });
+        
+        // Close modal functions
+        function closeModal() {
+            createClubModal.classList.add('hidden');
+            createClubForm.reset();
+            clubNameError.classList.add('hidden');
+            clubNameError.textContent = '';
+        }
+        
+        closeClubModal.addEventListener('click', closeModal);
+        cancelClubBtn.addEventListener('click', closeModal);
+        
+        // Close modal when clicking outside
+        createClubModal.addEventListener('click', function(event) {
+            if (event.target === createClubModal) {
+                closeModal();
+            }
+        });
+        
+        // Handle form submission
+        createClubForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const clubName = clubNameInput.value.trim();
+            
+            if (!clubName) {
+                clubNameError.textContent = 'Club name is required';
+                clubNameError.classList.remove('hidden');
+                return;
+            }
+            
+            // Get CSRF token
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            const csrftoken = getCookie('csrftoken') || document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+            
+            // Send AJAX request
+            fetch('{% url "create_club" %}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    'name': clubName
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    closeModal();
+                    // Reload page to show new club in left bar
+                    window.location.reload();
+                } else {
+                    // Show error message
+                    clubNameError.textContent = data.error || 'An error occurred';
+                    clubNameError.classList.remove('hidden');
+                }
+            })
+            .catch(error => {
+                console.error('Error creating club:', error);
+                clubNameError.textContent = 'An error occurred. Please try again.';
+                clubNameError.classList.remove('hidden');
+            });
+        });
     }
 })();
 </script>

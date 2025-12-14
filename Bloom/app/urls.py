@@ -17,6 +17,7 @@ urlpatterns = [
     path('signup/', views.signup, name='signup'),
     path('profile/', views.profile, name='profile'),
     path('search-clubs/', views.search_clubs, name='search_clubs'),
+    path('create-club/', views.create_club, name='create_club'),
     path('update-profile-picture/', views.update_profile_picture, name='update_profile_picture'),
     path('remove-profile-picture/', views.remove_profile_picture, name='remove_profile_picture'),
     path('aboutus/', views.aboutus, name='aboutus'),
