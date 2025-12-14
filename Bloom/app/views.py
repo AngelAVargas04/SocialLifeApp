@@ -49,7 +49,7 @@ def home(request):
 
     # FETCH DATA FOR THE FEED 
     # Fetch all posts from the database (ordered by '-date_posted' from your model's Meta class)
-    posts = Post.objects.all() 
+    posts = Post.objects.exclude(slug__isnull=True).exclude(slug__exact='').order_by('-date_posted')
     
     # RENDER TEMPLATE
     # Note: 'clubs' is automatically available via context processor (app.context_processors.clubs_context)
