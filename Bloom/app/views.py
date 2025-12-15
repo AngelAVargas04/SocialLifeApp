@@ -12,50 +12,41 @@ import os
 # Create your views here.
 @login_required
 def home(request):
-    # HANDLE POST SUBMISSION 
+    # --- HANDLE POST SUBMISSION (Keep exactly as is) ---
     if request.method == 'POST':
-        # Create a form instance and populate it with data from the request
         form = PostForm(request.POST)
         if form.is_valid():
-            # Save the form data, but don't commit to the database yet
             new_post = form.save(commit=False)
-            
-            # Manually set the user field to the current logged-in user
             new_post.user = request.user
             
-            # ⭐ SLUG GENERATION LOGIC ADDED HERE ⭐
-            
-            # 1. Determine the source text for the slug (use content, as title is optional)
+            # Slug generation logic
             content = form.cleaned_data.get('content')
-            # Use only the first 50 chars of content for a clean slug
             base_slug = slugify(content[:50])
-            
-            # 2. Check for uniqueness and append a counter if needed
             slug = base_slug
             counter = 1
             while Post.objects.filter(slug=slug).exists():
                 slug = f"{base_slug}-{counter}"
                 counter += 1
-            
             new_post.slug = slug
-            # ⭐ END SLUG GENERATION LOGIC ⭐
-
+            
             new_post.save()
-            # Redirect to the home page to prevent form resubmission
             return redirect('home') 
     else:
-        # HANDLE GET REQUEST (Display the page)
         form = PostForm()
 
-    # FETCH DATA FOR THE FEED 
-    # Fetch all posts from the database (ordered by '-date_posted' from your model's Meta class)
+    # --- FETCH FEED DATA (Keep as is) ---
     posts = Post.objects.exclude(slug__isnull=True).exclude(slug__exact='').order_by('-date_posted')
     
-    # RENDER TEMPLATE
-    # Note: 'clubs' is automatically available via context processor (app.context_processors.clubs_context)
+  # joined club ids for the logged-in user
+    joined_club_ids = []
+    if request.user.is_authenticated and hasattr(request.user, 'profile'):
+        joined_club_ids = list(request.user.profile.clubs.values_list('id', flat=True))
+
+    # --- RENDER TEMPLATE ---
     context = {
-        'posts': posts, # Pass the list of posts to the template
-        'form': form,   # Pass the post creation form to the template
+        'posts': posts,
+        'form': form,
+        'joined_club_ids': joined_club_ids, # <-- Pass the list to the template
     }
     return render(request, 'home.html', context)
 
