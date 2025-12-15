@@ -58,7 +58,6 @@
         joinLeaveButtons.forEach(button => {
             button.addEventListener('click', function() {
                 const clubId = button.getAttribute('data-club-id');
-                const isCurrentlyJoined = button.textContent.trim() === 'Leave';
                 function getCookie(name) {
                     let cookieValue = null;
                     if (document.cookie && document.cookie !== '') {
@@ -87,9 +86,11 @@
                 .then(data => {
                     if (data.success) {
                         window.location.reload();
+                    } else {
+                        alert("Error: " + (data.error || 'Unknown error occurred'));
                     }
                 })
-                .catch(error => console.error('Error:', error));
+                .catch(error => console.error('Fetch Error:', error));
             });
         });
     });

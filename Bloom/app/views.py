@@ -12,7 +12,29 @@ import os
 # Create your views here.
 @login_required
 def home(request):
-    # FETCH DATA FOR THE FEED 
+    # --- HANDLE POST SUBMISSION ---
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            new_post = form.save(commit=False)
+            new_post.user = request.user
+            
+            # Slug generation logic
+            content = form.cleaned_data.get('content')
+            base_slug = slugify(content[:50])
+            slug = base_slug
+            counter = 1
+            while Post.objects.filter(slug=slug).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            new_post.slug = slug
+            
+            new_post.save()
+            return redirect('home') 
+    else:
+        form = PostForm()
+
+    # --- FETCH DATA FOR THE FEED ---
     # Check for feed type parameter
     feed_type = request.GET.get('feed', 'all')  # 'all', 'following'
     
@@ -25,12 +47,18 @@ def home(request):
         # Default: Show all posts
         posts = Post.objects.exclude(slug__isnull=True).exclude(slug__exact='').order_by('-date_posted')
     
-    # RENDER TEMPLATE
-    # Note: 'clubs' is automatically available via context processor (app.context_processors.clubs_context)
+    # joined club ids for the logged-in user
+    joined_club_ids = []
+    if request.user.is_authenticated and hasattr(request.user, 'profile'):
+        joined_club_ids = list(request.user.profile.clubs.values_list('id', flat=True))
+
+    # --- RENDER TEMPLATE ---
     context = {
-        'posts': posts, # Pass the list of posts to the template
+        'posts': posts,  # Pass the list of posts to the template
+        'form': form,  # Pass the post creation form to the template
         'feed_type': feed_type,  # Pass the feed type to the template
         'current_club_id': None,  # Not on a club page, so no club ID
+        'joined_club_ids': joined_club_ids,  # Pass the list to the template
     }
     return render(request, 'home.html', context)
 
