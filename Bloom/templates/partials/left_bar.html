@@ -35,7 +35,7 @@
                         </a>
                         {% if user.is_authenticated %}
                             {% if club.id in user_club_ids %}
-                                <button class="join-leave-btn px-4 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600"
+                                <button class="join-leave-btn px-4 py-1 bg-red-600 text-black text-sm rounded hover:bg-red-600"
                                 data-club-id="{{ club.id }}">
                                     Leave</button>
                             {% else %}
