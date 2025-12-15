@@ -14,16 +14,26 @@
                         <strong>Groups on campus</strong>
                     </p>
                     <div class="space-y-4">
-                        {% for club in clubs_objects %}
-                            <div class="flex items-center gap-4 flex-shrink-0 text-grey-700 ">{{ club.name }}
-                                <!--if user is not in club then-->
-                                <button id="join" class="w-10 bg-blue-500 text-white text-sm rounded hover:bg-blue-600"
-                                data-club-id="{{ club.id }}">
-                                    Join</button>
-                            </div>
-                        {% empty %}
-                            <p class="text-gray-500 text-xs">No groups available yet.</p>
-                        {% endfor %}
+    {% for club in clubs_objects %}
+        <div class="flex items-center gap-4 flex-shrink-0 text-grey-700">
+            {{ club.name }}
+            
+            {% if club.id in joined_club_ids %}
+                <button 
+                    disabled
+                    class="w-16 bg-gray-700 text-black text-sm rounded cursor-not-allowed">
+                    Joined
+                </button>
+            {% else %}
+                <button 
+                    type="button"
+                    class="join-btn w-10 bg-blue-500 text-white text-sm rounded hover:bg-blue-600"
+                    data-club-id="{{ club.id }}">
+                    Join
+                </button>
+            {% endif %}
+        </div>
+    {% endfor %}
                     </div>
                 </div>
             </div>
@@ -31,38 +41,46 @@
 
         <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Select by class, not ID
+        // 1. Find all buttons with the class 'join-btn'
         const joinButtons = document.querySelectorAll('.join-btn');
+        console.log("Found " + joinButtons.length + " join buttons."); // Debug 1
 
         joinButtons.forEach(button => {
             button.addEventListener('click', function() {
-                // 1. Get the specific ID for this button
+                console.log("Button clicked!"); // Debug 2
+                
                 const clubId = button.getAttribute('data-club-id');
+                console.log("Club ID is: " + clubId); // Debug 3
 
-                // 2. Create FormData (This matches what request.POST expects)
-                const formData = new FormData();
-                formData.append('club_id', clubId);
+                if (!clubId) {
+                    console.error("Error: No club ID found on button.");
+                    return;
+                }
 
                 fetch('/join_club/', { 
                     method: 'POST',
                     headers: {
-                        // Do NOT set Content-Type to application/json
-                        // The browser will automatically set the correct content type for FormData
+                        'Content-Type': 'application/json',
                         'X-CSRFToken': '{{ csrf_token }}'
                     },
-                    body: formData // Send the form data object
+                    body: JSON.stringify({ 'club_id': clubId })
                 })
-                .then(response => response.json())
+                .then(response => {
+                    console.log("Server responded with status: " + response.status); // Debug 4
+                    return response.json();
+                })
                 .then(data => {
-                    // Assuming your view returns a JSON response like JsonResponse({'status': 'joined'})
-                    if (data.status === 'joined') {
+                    console.log("Data received:", data); // Debug 5
+                    if (data.success) {
                         button.textContent = 'Joined';
                         button.disabled = true;
                         button.classList.remove('bg-blue-500', 'hover:bg-blue-600');
                         button.classList.add('bg-gray-400', 'cursor-not-allowed');
+                    } else {
+                        alert("Error joining: " + data.error);
                     }
                 })
-                .catch(error => console.error('Error:', error));
+                .catch(error => console.error('Fetch Error:', error));
             });
         });
     });
