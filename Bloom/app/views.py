@@ -262,3 +262,22 @@ def add_comment(request, slug):
             })
     
     return JsonResponse({'success': False, 'error': 'Invalid request'})
+
+@login_required
+def join_club(request):
+    """AJAX endpoint to join a club"""
+    if request.method == 'POST':
+        import json
+        data = json.loads(request.body)
+        club_id = data.get('club_id')
+        
+        try:
+            club = Club.objects.get(id=club_id)
+            profile, created = Profile.objects.get_or_create(user=request.user)
+            profile.clubs.add(club)
+            return JsonResponse({'success': True, 'message': f'Joined club {club.name}'})
+        except Club.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Club not found'})
+    
+    return JsonResponse({'success': False, 'error': 'Invalid request method'})
+

@@ -6,18 +6,14 @@
                 <section>
                     <h2 class="text-gray-900 font-bold mb-4 pb-2 border-b border-gray-200"><strong>Your Groups</strong></h2>
                     <div class="space-y-4" style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        {% for club in request.user.profile.clubs.all %}
                         <div class="hover:bg-gray-50 transition cursor-pointer py-2">
-                            <p class="text-black font-semibold mb-1">Music Club</p>
+                            <p class="text-black font-semibold mb-1">{{ club.name }}</p>
                             <p class="text-gray-500 text-sm">245 members</p>
                         </div>
-                        <div class="hover:bg-gray-50 transition cursor-pointer py-2">
-                            <p class="text-black font-semibold mb-1">Cybersecurity Club</p>
-                            <p class="text-gray-500 text-sm">189 members</p>
-                        </div>
-                        <div class="hover:bg-gray-50 transition cursor-pointer py-2">
-                            <p class="text-black font-semibold mb-1">Making Friends</p>
-                            <p class="text-gray-500 text-sm">312 members</p>
-                        </div>
+                        {% empty %}
+                        <p class="text-gray-500 text-sm">You are not a member of any groups yet.</p>
+                        {% endfor %}
                     </div>
                 </section>
 

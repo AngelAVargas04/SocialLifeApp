@@ -15,7 +15,12 @@
                     </p>
                     <div class="space-y-4">
                         {% for club in clubs_objects %}
-                            <p class="text-gray-700">{{ club.name }}</p>
+                            <div class="flex items-center gap-4 flex-shrink-0 text-grey-700 ">{{ club.name }}
+                                <!--if user is not in club then-->
+                                <button id="join" class="w-10 bg-blue-500 text-white text-sm rounded hover:bg-blue-600"
+                                data-club-id="{{ club.id }}">
+                                    Join</button>
+                            </div>
                         {% empty %}
                             <p class="text-gray-500 text-xs">No groups available yet.</p>
                         {% endfor %}
@@ -23,3 +28,42 @@
                 </div>
             </div>
         </aside>
+
+        <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Select by class, not ID
+        const joinButtons = document.querySelectorAll('.join-btn');
+
+        joinButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // 1. Get the specific ID for this button
+                const clubId = button.getAttribute('data-club-id');
+
+                // 2. Create FormData (This matches what request.POST expects)
+                const formData = new FormData();
+                formData.append('club_id', clubId);
+
+                fetch('/join_club/', { 
+                    method: 'POST',
+                    headers: {
+                        // Do NOT set Content-Type to application/json
+                        // The browser will automatically set the correct content type for FormData
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: formData // Send the form data object
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Assuming your view returns a JSON response like JsonResponse({'status': 'joined'})
+                    if (data.status === 'joined') {
+                        button.textContent = 'Joined';
+                        button.disabled = true;
+                        button.classList.remove('bg-blue-500', 'hover:bg-blue-600');
+                        button.classList.add('bg-gray-400', 'cursor-not-allowed');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        });
+    });
+</script>
