@@ -1,65 +1,92 @@
-        <aside class="bg-white flex-shrink-0 overflow-y-auto overflow-x-hidden border-r border-gray-200" style="width: 240px; max-width: 240px; min-width: 240px; border-right: 1px solid #e5e7eb;">
-            <div class="p-6 space-y-6 text-gray-700 text-sm break-words overflow-wrap-anywhere" style="padding: 1.5rem;">
-                <div>
-                    <p class="mb-2 font-bold text-black-800">
-                        <strong>What is Bloom?</strong>
-                    </p>
-                    <p class="text-gray-700 leading-relaxed">
-                        Bloom is an app designed to vitalize campus life by allowing everyone to easily host, find, promote, or keep track of events on campus <a href="{% url 'aboutus' %}" class="text-blue-500 hover:text-blue-700 underline">Read more about us here!</a>
-                    </p>
-                </div>
-
-                <div>
-                    <p class="mb-2 font-bold text-black-800">
-                        <strong>Groups on campus</strong>
-                    </p>
-                    <div class="space-y-4">
-                        {% for club in clubs_objects %}
-                            <div class="flex items-center gap-4 flex-shrink-0 text-grey-700 ">{{ club.name }}
-                                <!--if user is not in club then-->
-                                <button id="join" class="w-10 bg-blue-500 text-white text-sm rounded hover:bg-blue-600"
+<aside class="bg-white flex-shrink-0 overflow-y-auto overflow-x-hidden border-r border-gray-200" style="width: 240px; max-width: 240px; min-width: 240px; border-right: 1px solid #e5e7eb;">
+    <div class="p-6 space-y-6 text-gray-700 text-sm break-words overflow-wrap-anywhere" style="padding: 1.5rem;">
+        <div>
+            <p class="mb-2 font-bold text-black-800">
+                <strong>What is Bloom?</strong>
+            </p>
+            <p class="text-gray-700 leading-relaxed">
+                Bloom is an app designed to vitalize campus life by allowing everyone to easily host, find, promote, or keep track of events on campus. <a href="{% url 'aboutus' %}" class="text-blue-500 hover:text-blue-700 underline">Read more about us here!</a>
+            </p>
+        </div>
+        {% if user.is_authenticated %}
+        <div>
+            <p class="mb-2 font-bold text-black-800">
+                <strong>Your feeds</strong>
+            </p>
+            <div class="space-y-4">
+                <a href="{% url 'home' %}" class="block text-gray-700 hover:text-gray-900 transition">
+                    All posts
+                </a>
+                <a href="{% url 'home' %}?feed=following" class="block text-gray-700 hover:text-gray-900 transition">
+                    Groups you follow
+                </a>
+            </div>
+        </div>
+        {% endif %}
+        <div>
+            <p class="mb-2 font-bold text-black-800">
+                <strong>Groups on campus</strong>
+            </p>
+            <div class="space-y-4">
+                {% for club in clubs_objects %}
+                    <div class="flex items-center gap-4 flex-shrink-0">
+                        <a href="{% url 'club_page' club.id %}" class="flex-1 text-gray-700 hover:text-gray-900 transition">
+                            {{ club.name }}
+                        </a>
+                        {% if user.is_authenticated %}
+                            {% if club.id in user_club_ids %}
+                                <button class="join-leave-btn px-4 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600"
+                                data-club-id="{{ club.id }}">
+                                    Leave</button>
+                            {% else %}
+                                <button class="join-leave-btn px-4 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600"
                                 data-club-id="{{ club.id }}">
                                     Join</button>
-                            </div>
-                        {% empty %}
-                            <p class="text-gray-500 text-xs">No groups available yet.</p>
-                        {% endfor %}
+                            {% endif %}
+                        {% endif %}
                     </div>
-                </div>
+                {% empty %}
+                    <p class="text-gray-500 text-xs">No groups available yet.</p>
+                {% endfor %}
             </div>
-        </aside>
-
-        <script>
+        </div>
+    </div>
+</aside>
+<script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Select by class, not ID
-        const joinButtons = document.querySelectorAll('.join-btn');
-
-        joinButtons.forEach(button => {
+        const joinLeaveButtons = document.querySelectorAll('.join-leave-btn');
+        joinLeaveButtons.forEach(button => {
             button.addEventListener('click', function() {
-                // 1. Get the specific ID for this button
                 const clubId = button.getAttribute('data-club-id');
-
-                // 2. Create FormData (This matches what request.POST expects)
+                const isCurrentlyJoined = button.textContent.trim() === 'Leave';
+                function getCookie(name) {
+                    let cookieValue = null;
+                    if (document.cookie && document.cookie !== '') {
+                        const cookies = document.cookie.split(';');
+                        for (let i = 0; i < cookies.length; i++) {
+                            let cookie = cookies[i].trim();
+                            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                break;
+                            }
+                        }
+                    }
+                    return cookieValue;
+                }
+                const csrftoken = getCookie('csrftoken');
                 const formData = new FormData();
                 formData.append('club_id', clubId);
-
                 fetch('/join_club/', { 
                     method: 'POST',
                     headers: {
-                        // Do NOT set Content-Type to application/json
-                        // The browser will automatically set the correct content type for FormData
-                        'X-CSRFToken': '{{ csrf_token }}'
+                        'X-CSRFToken': csrftoken
                     },
-                    body: formData // Send the form data object
+                    body: formData
                 })
                 .then(response => response.json())
                 .then(data => {
-                    // Assuming your view returns a JSON response like JsonResponse({'status': 'joined'})
-                    if (data.status === 'joined') {
-                        button.textContent = 'Joined';
-                        button.disabled = true;
-                        button.classList.remove('bg-blue-500', 'hover:bg-blue-600');
-                        button.classList.add('bg-gray-400', 'cursor-not-allowed');
+                    if (data.success) {
+                        window.location.reload();
                     }
                 })
                 .catch(error => console.error('Error:', error));

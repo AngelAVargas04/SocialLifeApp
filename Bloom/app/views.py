@@ -12,50 +12,25 @@ import os
 # Create your views here.
 @login_required
 def home(request):
-    # HANDLE POST SUBMISSION 
-    if request.method == 'POST':
-        # Create a form instance and populate it with data from the request
-        form = PostForm(request.POST)
-        if form.is_valid():
-            # Save the form data, but don't commit to the database yet
-            new_post = form.save(commit=False)
-            
-            # Manually set the user field to the current logged-in user
-            new_post.user = request.user
-            
-            # ⭐ SLUG GENERATION LOGIC ADDED HERE ⭐
-            
-            # 1. Determine the source text for the slug (use content, as title is optional)
-            content = form.cleaned_data.get('content')
-            # Use only the first 50 chars of content for a clean slug
-            base_slug = slugify(content[:50])
-            
-            # 2. Check for uniqueness and append a counter if needed
-            slug = base_slug
-            counter = 1
-            while Post.objects.filter(slug=slug).exists():
-                slug = f"{base_slug}-{counter}"
-                counter += 1
-            
-            new_post.slug = slug
-            # ⭐ END SLUG GENERATION LOGIC ⭐
-
-            new_post.save()
-            # Redirect to the home page to prevent form resubmission
-            return redirect('home') 
-    else:
-        # HANDLE GET REQUEST (Display the page)
-        form = PostForm()
-
     # FETCH DATA FOR THE FEED 
-    # Fetch all posts from the database (ordered by '-date_posted' from your model's Meta class)
-    posts = Post.objects.exclude(slug__isnull=True).exclude(slug__exact='').order_by('-date_posted')
+    # Check for feed type parameter
+    feed_type = request.GET.get('feed', 'all')  # 'all', 'following'
+    
+    if feed_type == 'following':
+        # Show only posts from clubs the user follows
+        profile_obj, _ = Profile.objects.get_or_create(user=request.user)
+        followed_clubs = profile_obj.clubs.all()
+        posts = Post.objects.filter(club__in=followed_clubs).exclude(slug__isnull=True).exclude(slug__exact='').order_by('-date_posted')
+    else:
+        # Default: Show all posts
+        posts = Post.objects.exclude(slug__isnull=True).exclude(slug__exact='').order_by('-date_posted')
     
     # RENDER TEMPLATE
     # Note: 'clubs' is automatically available via context processor (app.context_processors.clubs_context)
     context = {
         'posts': posts, # Pass the list of posts to the template
-        'form': form,   # Pass the post creation form to the template
+        'feed_type': feed_type,  # Pass the feed type to the template
+        'current_club_id': None,  # Not on a club page, so no club ID
     }
     return render(request, 'home.html', context)
 
@@ -265,19 +240,100 @@ def add_comment(request, slug):
 
 @login_required
 def join_club(request):
-    """AJAX endpoint to join a club"""
+    """AJAX endpoint to join or leave a club"""
     if request.method == 'POST':
-        import json
-        data = json.loads(request.body)
-        club_id = data.get('club_id')
+        club_id = request.POST.get('club_id')
         
         try:
             club = Club.objects.get(id=club_id)
             profile, created = Profile.objects.get_or_create(user=request.user)
-            profile.clubs.add(club)
-            return JsonResponse({'success': True, 'message': f'Joined club {club.name}'})
+            
+            if club in profile.clubs.all():
+                # Leave the club
+                profile.clubs.remove(club)
+                return JsonResponse({'success': True, 'action': 'left', 'message': f'Left club {club.name}'})
+            else:
+                # Join the club
+                profile.clubs.add(club)
+                return JsonResponse({'success': True, 'action': 'joined', 'message': f'Joined club {club.name}'})
         except Club.DoesNotExist:
             return JsonResponse({'success': False, 'error': 'Club not found'})
+    
+    return JsonResponse({'success': False, 'error': 'Invalid request method'})
+
+@login_required
+def club_page(request, club_id):
+    """View for a specific club's page showing only posts for that club"""
+    club = get_object_or_404(Club, id=club_id)
+    
+    # HANDLE POST SUBMISSION 
+    if request.method == 'POST':
+        # Create a form instance and populate it with data from the request
+        form = PostForm(request.POST)
+        if form.is_valid():
+            # Save the form data, but don't commit to the database yet
+            new_post = form.save(commit=False)
+            
+            # Manually set the user field to the current logged-in user
+            new_post.user = request.user
+            # Associate the post with this club
+            new_post.club = club
+            
+            # ⭐ SLUG GENERATION LOGIC ADDED HERE ⭐
+            
+            # 1. Determine the source text for the slug (use content, as title is optional)
+            content = form.cleaned_data.get('content')
+            # Use only the first 50 chars of content for a clean slug
+            base_slug = slugify(content[:50])
+            
+            # 2. Check for uniqueness and append a counter if needed
+            slug = base_slug
+            counter = 1
+            while Post.objects.filter(slug=slug).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            
+            new_post.slug = slug
+            # ⭐ END SLUG GENERATION LOGIC ⭐
+
+            new_post.save()
+            # Redirect to the club page to prevent form resubmission
+            return redirect('club_page', club_id=club_id) 
+    else:
+        # HANDLE GET REQUEST (Display the page)
+        form = PostForm()
+    
+    # Get posts for this specific club
+    posts = Post.objects.filter(club=club).exclude(slug__isnull=True).exclude(slug__exact='').order_by('-date_posted')
+    
+    context = {
+        'club': club,
+        'posts': posts,
+        'form': form,   # Pass the post creation form to the template
+        'current_club_id': club.id,  # Pass club ID so posts can hide group name on club's own page
+    }
+    return render(request, 'club_page.html', context)
+
+@login_required
+def follow_club(request, club_id):
+    """AJAX endpoint to follow or unfollow a club"""
+    if request.method == 'POST':
+        club = get_object_or_404(Club, id=club_id)
+        profile_obj, _ = Profile.objects.get_or_create(user=request.user)
+        
+        if club in profile_obj.clubs.all():
+            # Unfollow
+            profile_obj.clubs.remove(club)
+            is_following = False
+        else:
+            # Follow
+            profile_obj.clubs.add(club)
+            is_following = True
+        
+        return JsonResponse({
+            'success': True,
+            'is_following': is_following
+        })
     
     return JsonResponse({'success': False, 'error': 'Invalid request method'})
 

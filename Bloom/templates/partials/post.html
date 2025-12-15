@@ -25,17 +25,20 @@
             </div>
             
             <p class="text-sm text-gray-600">
-                {% if post.subject %}
-                    {{ post.subject }} 
-                {% else %}
-                    General
+                {% if post.club and current_club_id != post.club.id %}
+                    {{ post.club.name }}
+                {% elif post.subject %}
+                    {{ post.subject }}
                 {% endif %}
             </p>
         </div>
     </div>
     
     <div class="mb-5" style="margin-bottom: 1.25rem;">
-        <p class="text-gray-800 leading-relaxed whitespace-pre-wrap justify-left">
+        {% if post.title %}
+        <h4 class="text-lg font-semibold text-gray-900 mb-2 text-left">{{ post.title }}</h4>
+        {% endif %}
+        <p class="text-gray-800 leading-relaxed whitespace-pre-wrap text-left">
             {{ post.content }}
         </p>
     </div>

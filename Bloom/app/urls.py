@@ -23,4 +23,6 @@ urlpatterns = [
     path('aboutus/', views.aboutus, name='aboutus'),
     path('like-post/<slug:slug>/', views.like_post, name='like_post'),
     path('join_club/', views.join_club, name='join_club'),
+    path('club/<int:club_id>/', views.club_page, name='club_page'),
+    path('follow-club/<int:club_id>/', views.follow_club, name='follow_club'),
 ]

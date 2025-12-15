@@ -10,6 +10,10 @@ class Post(models.Model):
     # on_delete=models.CASCADE means if the User is deleted, their posts are deleted too.
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     
+    # LINK TO CLUB (Optional)
+    # Associates the post with a specific club/group. If null, it's a general post.
+    club = models.ForeignKey('Club', on_delete=models.SET_NULL, null=True, blank=True, related_name='posts')
+    
     # POST CONTENT
     # Changed 'subject' to 'title' and limited 'description' to a tweet-like length
     title = models.CharField(max_length=100, blank=True, null=True)

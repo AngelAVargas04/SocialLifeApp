@@ -246,7 +246,19 @@
             span.className = 'text-sm text-gray-700 flex-1';
             span.textContent = clubName; // Use textContent to prevent XSS
             span.addEventListener('click', function() {
-                selectClub(clubName);
+                // For recent searches, we need to fetch the club ID
+                fetch('{% url "search_clubs" %}?q=' + encodeURIComponent(clubName))
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.clubs.length > 0) {
+                            selectClub(clubName, data.clubs[0].id);
+                        } else {
+                            selectClub(clubName, null);
+                        }
+                    })
+                    .catch(error => {
+                        selectClub(clubName, null);
+                    });
             });
             
             // Create remove button
@@ -279,30 +291,37 @@
 
     // Render search results
     function renderSearchResults(query) {
-        const results = filterClubs(query);
-        searchResultsList.innerHTML = '';
-        
-        if (results.length === 0) {
-            noResults.classList.remove('hidden');
-            searchResultsList.classList.add('hidden');
-        } else {
-            noResults.classList.add('hidden');
-            searchResultsList.classList.remove('hidden');
-            results.forEach(clubName => {
-                const item = document.createElement('div');
-                item.className = 'p-2 hover:bg-gray-50 rounded cursor-pointer';
+        // Fetch clubs with IDs from the server
+        fetch('{% url "search_clubs" %}?q=' + encodeURIComponent(query))
+            .then(response => response.json())
+            .then(data => {
+                searchResultsList.innerHTML = '';
                 
-                const span = document.createElement('span');
-                span.className = 'text-sm text-gray-700';
-                span.textContent = clubName; // Use textContent to prevent XSS
-                span.addEventListener('click', function() {
-                    selectClub(clubName);
-                });
-                
-                item.appendChild(span);
-                searchResultsList.appendChild(item);
+                if (data.clubs.length === 0) {
+                    noResults.classList.remove('hidden');
+                    searchResultsList.classList.add('hidden');
+                } else {
+                    noResults.classList.add('hidden');
+                    searchResultsList.classList.remove('hidden');
+                    data.clubs.forEach(club => {
+                        const item = document.createElement('div');
+                        item.className = 'p-2 hover:bg-gray-50 rounded cursor-pointer';
+                        
+                        const span = document.createElement('span');
+                        span.className = 'text-sm text-gray-700';
+                        span.textContent = club.name; // Use textContent to prevent XSS
+                        span.addEventListener('click', function() {
+                            selectClub(club.name, club.id);
+                        });
+                        
+                        item.appendChild(span);
+                        searchResultsList.appendChild(item);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching clubs:', error);
             });
-        }
     }
 
     // Handle search input
@@ -323,12 +342,14 @@
     }
 
     // Select a club
-    function selectClub(clubName) {
+    function selectClub(clubName, clubId) {
         searchInput.value = clubName;
         addToRecentSearches(clubName);
         searchDropdown.classList.add('hidden');
-        // You can add navigation logic here, e.g., redirect to club page
-        console.log('Selected club:', clubName);
+        // Navigate to club page if ID is provided
+        if (clubId) {
+            window.location.href = '/club/' + clubId + '/';
+        }
     }
 
     // Show dropdown on focus and refresh clubs to get latest data
